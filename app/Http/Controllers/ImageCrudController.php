@@ -98,12 +98,19 @@ class ImageCrudController extends Controller
         $filename="";
 
         if($request->hasFile('new_image')){
+            $request->validate([
+                'title'=>'required',
+                'new_image'=>'required|max:1024'
+            ]);
             if(Storage::disk('fotos')->exists($image->image)){
                 Storage::disk('fotos')->delete($image->image);
             }
 
             $filename = $request->file('new_image')->store('/', 'fotos');
          }else{
+            $request->validate([
+                'title'=>'required',
+            ]);
             $filename=$request->image;
          }
 
